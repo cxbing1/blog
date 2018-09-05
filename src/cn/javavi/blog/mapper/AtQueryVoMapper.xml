@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="cn.javavi.blog.mapper.AtQueryVoMapper">
+	
+	<select id="findAtQueryVoById" parameterType="String" resultMap="typeArticle">
+		select article.*,type.name type_name
+		from article, type
+		where article.type_id=type.id and status=0 and article.id=#{value}
+	</select>
+	
+	
+	<select id="findArticleList"  resultMap="typeArticle">
+		select article.*,type.name type_name
+		from article, type
+		where article.type_id=type.id and status=0
+		order by creattime desc
+	</select>
+	
+	
+	<select id="findArticleByTitle" parameterType="String" resultMap="typeArticle">
+		select article.*,type.name type_name
+		from article, type
+		where article.type_id=type.id and status=0 and article.title like "%${value}%" and status=0
+		order by creattime desc
+	</select>
+	
+	<select id="searchQueryVoList" parameterType="java.util.Map" resultMap="typeArticle" >
+		select article.*,type.name type_name
+		from article, type
+		where article.type_id=type.id and article.status=0
+		<if test="typeId!=null and typeId!=''">and article.type_id=#{typeId}</if>
+		<if test="startDate!=null and startDate!=''">and article.updatetime between #{startDate} and #{endDate}</if>
+		<if test="title!=null and title!=''">and article.title like "%${title}%"</if>
+		
+		<if test="order==1">order by creattime desc</if>
+		<if test="order==2">order by updatetime desc</if>
+		<if test="order==3">order by view_count desc</if>
+	</select>
+	
+	
+	
+	<resultMap type="cn.javavi.blog.po.AtQueryVo" id="typeArticle">
+		<association property="article" javaType="cn.javavi.blog.po.Article">
+			<id property="id" column="id"/>
+			<result property="title" column="title"/>
+			<result property="cover" column="cover"/>
+			<result property="creatTime" column="creattime"/>
+			<result property="updateTime" column="updatetime"/>
+			<result property="typeId" column="type_id"/>
+			<result property="contentText" column="content_text"/>
+			<result property="content" column="content"/>
+			<result property="viewCount" column="view_count"/>
+		</association>
+		
+		<association property="type" javaType="cn.javavi.blog.po.Type">
+			<id property="id" column="type_id"/>
+			<result property="name" column="type_name"/>
+		</association>
+		
+	</resultMap>
+	
+</mapper>
+

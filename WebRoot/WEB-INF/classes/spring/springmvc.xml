@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+     xmlns:aop="http://www.springframework.org/schema/aop"
+     xmlns:tx="http://www.springframework.org/schema/tx"
+     xmlns:mvc="http://www.springframework.org/schema/mvc"
+     
+    xmlns:p="http://www.springframework.org/schema/p"
+    
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+    					http://www.springframework.org/schema/beans/spring-beans.xsd
+    					http://www.springframework.org/schema/context 
+    					http://www.springframework.org/schema/context/spring-context.xsd
+    					http://www.springframework.org/schema/aop 
+    					http://www.springframework.org/schema/aop/spring-aop.xsd
+    					http://www.springframework.org/schema/tx 
+    					http://www.springframework.org/schema/tx/spring-tx.xsd
+    					http://www.springframework.org/schema/mvc 
+    					http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+  
+  
+ <!-- 扫描handler -->
+<context:component-scan base-package="cn.javavi.blog.controller"></context:component-scan>
+
+
+ <!-- 视图解析器 -->
+  <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+  	<property name="prefix" value="/WEB-INF/page/"></property>
+  	<property name="suffix" value=".jsp"></property>
+  	
+  </bean>
+  
+   
+  
+
+  <!-- 使用mvc:annotation-driven代替上面两个注解映射器和注解适配的配置
+     mvc:annotation-driven默认加载很多的参数绑定方法，
+     比如json转换解析器默认加载了，如果使用mvc:annotation-driven则不用配置上面的RequestMappingHandlerMapping和RequestMappingHandlerAdapter
+     实际开发时使用mvc:annotation-driven
+     -->
+  <mvc:annotation-driven >
+  	
+  </mvc:annotation-driven>
+  
+  
+  
+  <!-- 处理静态资源 -->
+	<mvc:default-servlet-handler/>
+	
+	
+  <!-- 自定义日期类型参数绑定 -->
+  
+ <!-- <bean id="onversionservice" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+  		<property name="converters">
+  			<list>
+  				<bean class="cn.itcast.ssm.controller.converter.CustomDateConverter"></bean>
+  			</list>
+  		</property>
+ 	 </bean>
+   --> 
+  
+  <!-- 文件上传 -->
+     <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        	<!--  设置上传文件的最大尺寸为5MB  -->
+        <property name="maxUploadSize">
+            <value>5242880</value>
+        </property>
+    </bean> 
+    
+    <!-- 拦截器配置 -->		
+    <mvc:interceptors>
+    	<mvc:interceptor>
+    		<mvc:mapping path="/**"/>
+    		<bean class="cn.javavi.blog.interceptor.LoginInterceptor"></bean>
+    	</mvc:interceptor>
+    </mvc:interceptors>			
+    					
+    					
+</beans>

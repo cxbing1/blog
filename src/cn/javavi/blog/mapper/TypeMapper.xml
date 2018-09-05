@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="cn.javavi.blog.mapper.TypeMapper">
+	
+	<select id="findTypeById" parameterType="String" resultType="cn.javavi.blog.po.Type">
+		select * from type where id=#{value}
+	</select>
+	
+	
+	
+	<select id="findTypeList"  resultType="cn.javavi.blog.po.Type">
+		select * from type order by sort
+	</select>
+	
+	<update id="updateType" parameterType="cn.javavi.blog.po.Type">
+		update type set name=#{name}, sort=#{sort} where id=#{id}
+	</update>
+	
+	<insert id="insertType" parameterType="cn.javavi.blog.po.Type">
+		insert into type (sort,name) values(#{sort},#{name})
+	</insert>
+	<delete id="deleteType" parameterType="String">
+		delete from type where id=#{value}
+	</delete>
+	
+</mapper>
+

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="cn.javavi.blog.mapper.UserMapper">
+	
+	<select id="findUserById" parameterType="String" resultType="cn.javavi.blog.po.User">
+		select * from user where number=#{value}
+	</select>
+	
+	<select id="findUserByName" parameterType="String" resultType="cn.javavi.blog.po.User">
+		select * from user where name like "%${value}%"
+	</select>
+	
+	<insert id="insertUser" parameterType="cn.javavi.blog.po.User">
+		insert into user values(#{number},#{name},#{password},#{hisnum})
+	</insert>
+
+
+	<delete id="deleteUser" parameterType="String">
+		delete from user where number=#{number}
+	</delete>
+	
+	<update id="updateUser" parameterType="cn.javavi.blog.po.User">
+		update user set number=#{number},password=#{password} where number=#{number}
+	</update>
+</mapper>
+
